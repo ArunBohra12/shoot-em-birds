@@ -9,6 +9,7 @@ interface PlayerInterface {
 
 class Player implements PlayerInterface {
   private context: CanvasRenderingContext2D;
+  private canvas: HTMLCanvasElement;
 
   public position: Position;
   public size: Size = {
@@ -22,6 +23,7 @@ class Player implements PlayerInterface {
     const { canvas, context } = getCanvasAndContext(canvasSelector);
 
     this.context = context;
+    this.canvas = canvas;
 
     // Calculate the position at the center in x-axis
     this.position = {
@@ -40,12 +42,19 @@ class Player implements PlayerInterface {
    */
   move(side: string): void {
     const speedChange = 5;
+    const maxX = this.canvas.width - 100;
 
-    if (side === "left") {
+    if (side === "left" && this.position.x >= 100) {
       this.speed = -speedChange;
-    } else if (side === "right") {
-      this.speed = speedChange;
+      return;
     }
+
+    if (side === "right" && this.position.x <= maxX) {
+      this.speed = speedChange;
+      return;
+    }
+
+    this.speed = 0;
   }
 
   // Draw the player
