@@ -1,5 +1,6 @@
 import { getCanvasAndContext, setCanvasDimentions } from "./canvas";
 import Player from "./classes/Player";
+import { drawStaticScenes } from "./game/gameScenes";
 
 const gameCanvasSelector: string = "#game-canvas";
 
@@ -12,8 +13,9 @@ const animate = function () {
 
   const { canvas, context } = getCanvasAndContext(gameCanvasSelector);
 
-  context.fillStyle = "#000";
+  context.fillStyle = "#57a3c6";
   context.fillRect(0, 0, canvas.width, canvas.height);
+  drawStaticScenes(canvas, context);
 
   gun.draw();
 };

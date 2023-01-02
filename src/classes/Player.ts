@@ -34,20 +34,21 @@ class Player implements PlayerInterface {
     this.speed = 0;
   }
 
+  /**
+   * If the side is left, set the speed to -5, otherwise if the side is right, set the speed to 5.
+   * @param {string} side - string - this is the side that the player is moving to.
+   */
   move(side: string): void {
     const speedChange = 5;
 
     if (side === "left") {
       this.speed = -speedChange;
-      return;
-    }
-
-    if (side === "right") {
+    } else if (side === "right") {
       this.speed = speedChange;
-      return;
     }
   }
 
+  // Draw the player
   draw(): void {
     this.context.fillStyle = "#f00";
 
