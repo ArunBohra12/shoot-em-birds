@@ -34,3 +34,9 @@ window.addEventListener("keyup", function (e) {
 
   gun.stop();
 });
+
+window.addEventListener("keyup", function (e) {
+  if (e.code !== "Space") return;
+
+  gun.shoot();
+});

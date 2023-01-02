@@ -1,15 +1,18 @@
 import { getCanvasAndContext } from "../canvas";
 import { Size, Position } from "../types/gameTypes";
+import Bullet from "./Bullet";
 
 interface PlayerInterface {
   size: Size;
   position: Position;
   speed: number;
+  shoot: () => void;
 }
 
 class Player implements PlayerInterface {
   private context: CanvasRenderingContext2D;
   private canvas: HTMLCanvasElement;
+  private bullet: Bullet;
 
   public position: Position;
   public size: Size = {
@@ -30,6 +33,8 @@ class Player implements PlayerInterface {
       x: canvas.width / 2 - this.size.width / 2,
       y: canvas.height - 150,
     };
+
+    this.bullet = new Bullet({ x: this.position.x, y: this.position.y });
   }
 
   stop(): void {
@@ -57,12 +62,20 @@ class Player implements PlayerInterface {
     this.speed = 0;
   }
 
+  // Shoot the bullet
+  shoot(): void {
+    this.bullet.move();
+  }
+
   // Draw the player
   draw(): void {
     this.context.fillStyle = "#f00";
 
+    this.bullet.updatePosition({ x: this.position.x, y: this.bullet.position.y });
+
     this.position.x += this.speed;
     this.context.fillRect(this.position.x, this.position.y, this.size.width, this.size.height);
+    this.bullet.draw();
   }
 }
 
