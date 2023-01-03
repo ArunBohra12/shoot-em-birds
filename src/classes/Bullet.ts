@@ -1,5 +1,8 @@
-import { getCanvasAndContext } from "../canvas";
+import { createCanvasImage, getCanvasAndContext } from "../canvas";
 import { Position, Size } from "../types/gameTypes";
+import bullet from "../assets/stone.png";
+
+const BulletImage = createCanvasImage(bullet);
 
 interface BulletInterface {
   size: Size;
@@ -7,7 +10,7 @@ interface BulletInterface {
 }
 
 class Bullet implements BulletInterface {
-  private canvas: HTMLCanvasElement;
+  public canvas: HTMLCanvasElement;
   private context: CanvasRenderingContext2D;
 
   private isMoving = false;
@@ -74,7 +77,7 @@ class Bullet implements BulletInterface {
    */
   draw() {
     this.context.fillStyle = "#777";
-    this.context.fillRect(this.position.x, this.position.y, this.size.width, this.size.height);
+    this.context.drawImage(BulletImage, this.position.x, this.position.y);
 
     if (this.isMoving) {
       this.position.y += this.getSpeed;

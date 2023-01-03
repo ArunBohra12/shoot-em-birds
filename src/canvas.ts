@@ -31,3 +31,15 @@ export const getCanvasAndContext = function (canvasSelector: string): CanvasAndC
     context,
   };
 };
+
+/**
+ * CreateCanvasImage takes a string and returns a CanvasImageSource
+ * The generated image will be rendered on the canvas
+ * @param {string} imageSrc - string - The image source.
+ * @returns CanvasImageSource
+ */
+export const createCanvasImage = function (imageSrc: string): CanvasImageSource {
+  const image = new Image();
+  image.src = imageSrc;
+  return image;
+};

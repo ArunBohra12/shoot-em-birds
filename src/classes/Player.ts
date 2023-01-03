@@ -1,6 +1,9 @@
-import { getCanvasAndContext } from "../canvas";
+import { createCanvasImage, getCanvasAndContext } from "../canvas";
 import { Size, Position } from "../types/gameTypes";
 import Bullet from "./Bullet";
+import gun from "../assets/gun.png";
+
+const GunImage = createCanvasImage(gun);
 
 interface PlayerInterface {
   size: Size;
@@ -16,8 +19,8 @@ class Player implements PlayerInterface {
 
   public position: Position;
   public size: Size = {
-    height: 90,
-    width: 60,
+    height: 107,
+    width: 52,
   };
 
   public speed = 0;
@@ -34,7 +37,7 @@ class Player implements PlayerInterface {
       y: canvas.height - 150,
     };
 
-    this.bullet = new Bullet({ x: this.position.x, y: this.position.y });
+    this.bullet = new Bullet({ x: this.position.x + this.size.width / 2, y: this.position.y });
   }
 
   stop(): void {
@@ -71,10 +74,11 @@ class Player implements PlayerInterface {
   draw(): void {
     this.context.fillStyle = "#f00";
 
-    this.bullet.updatePosition({ x: this.position.x, y: this.bullet.position.y });
+    this.bullet.updatePosition({ x: this.position.x + this.size.width / 3, y: this.bullet.position.y });
 
     this.position.x += this.speed;
-    this.context.fillRect(this.position.x, this.position.y, this.size.width, this.size.height);
+    this.context.drawImage(GunImage, this.position.x, this.position.y);
+    // this.context.fillRect(this.position.x, this.position.y, this.size.width, this.size.height);
     this.bullet.draw();
   }
 }

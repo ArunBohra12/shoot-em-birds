@@ -1,4 +1,6 @@
 import { Position } from "../types/gameTypes";
+import pole from "../assets/pole.png";
+import { createCanvasImage } from "../canvas";
 
 const GROUND_HEIGHT = 100;
 
@@ -27,14 +29,14 @@ const drawGrass = function (canvas: HTMLCanvasElement, context: CanvasRenderingC
  * @param {CanvasRenderingContext2D} context - CanvasRenderingContext2D - the context of the canvas
  */
 const drawPoles = function (canvas: HTMLCanvasElement, context: CanvasRenderingContext2D) {
-  const polePosition: Position = { x: 100, y: 100 };
+  const polePosition: Position = { x: 100, y: 15 };
 
   context.fillStyle = "brown";
 
+  const PoleImage = createCanvasImage(pole);
   // pole on the left
-  context.fillRect(polePosition.x, polePosition.y, 30, canvas.height - polePosition.y - GROUND_HEIGHT);
-  // pole on the right
-  context.fillRect(canvas.width - polePosition.x, polePosition.y, 30, canvas.height - polePosition.y - GROUND_HEIGHT);
+  context.drawImage(PoleImage, 0, polePosition.y);
+  context.drawImage(PoleImage, canvas.width - Number(PoleImage.width), polePosition.y);
 };
 
 /**

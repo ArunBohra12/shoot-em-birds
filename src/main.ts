@@ -1,5 +1,6 @@
 import { getCanvasAndContext, setCanvasDimentions } from "./canvas";
 import Player from "./classes/Player";
+import Wire from "./classes/Wire";
 import { drawStaticScenes } from "./game/gameScenes";
 
 const gameCanvasSelector: string = "#game-canvas";
@@ -7,6 +8,7 @@ const gameCanvasSelector: string = "#game-canvas";
 setCanvasDimentions(gameCanvasSelector);
 
 const gun = new Player(gameCanvasSelector);
+const wire = new Wire(150);
 
 const animate = function () {
   requestAnimationFrame(animate);
@@ -18,6 +20,7 @@ const animate = function () {
   drawStaticScenes(canvas, context);
 
   gun.draw();
+  wire.draw();
 };
 
 animate();
