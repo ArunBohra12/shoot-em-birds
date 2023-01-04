@@ -21,6 +21,7 @@ const animate = function () {
 
   gun.draw();
   wire.draw();
+  wire.addEnemy();
 };
 
 animate();
