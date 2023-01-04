@@ -1,12 +1,11 @@
 import { createCanvasImage, getCanvasAndContext } from "../canvas";
 import Enemy from "./Enemy";
-import bird from "../assets/bird.png";
+import bird from "../assets/img/bird.png";
 import { Position, Size } from "../types/gameTypes";
 
 const BirdImage = createCanvasImage(bird);
 
 class Bird extends Enemy {
-  private canvas: HTMLCanvasElement;
   private context: CanvasRenderingContext2D;
 
   public size: Size = {
@@ -19,9 +18,8 @@ class Bird extends Enemy {
   constructor(public birdPosition: Position) {
     super();
 
-    const { canvas, context } = getCanvasAndContext("#game-canvas");
+    const { context } = getCanvasAndContext("#game-canvas");
 
-    this.canvas = canvas;
     this.context = context;
 
     this.moveDirection = "right";

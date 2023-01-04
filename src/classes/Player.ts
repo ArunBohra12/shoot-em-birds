@@ -1,7 +1,7 @@
 import { createCanvasImage, getCanvasAndContext } from "../canvas";
 import { Size, Position } from "../types/gameTypes";
 import Bullet from "./Bullet";
-import gun from "../assets/gun.png";
+import gun from "../assets/img/gun.png";
 
 const GunImage = createCanvasImage(gun);
 
@@ -15,8 +15,8 @@ interface PlayerInterface {
 class Player implements PlayerInterface {
   private context: CanvasRenderingContext2D;
   private canvas: HTMLCanvasElement;
-  private bullet: Bullet;
 
+  public bullet: Bullet;
   public position: Position;
   public size: Size = {
     height: 107,
@@ -70,7 +70,24 @@ class Player implements PlayerInterface {
     this.bullet.move();
   }
 
-  // Draw the player
+  // Catch the bullet
+  // by stopping it when it is colliding with the gun
+  catchBullet(): void {
+    /* This is checking if the bullet is moving down or not. 
+      If it is not moving down, then it will stop trying to catch bullet & return.
+    */
+    if (this.bullet.movingDirection === "up" || this.bullet.isBulletMoving === false) return;
+
+    if (
+      this.bullet.position.x > this.position.x &&
+      this.bullet.position.x + this.bullet.size.width < this.position.x + this.size.width &&
+      this.bullet.position.y >= this.position.y
+    ) {
+      this.bullet.stop();
+    }
+  }
+
+  // Draw and update the player
   draw(): void {
     this.context.fillStyle = "#f00";
 
@@ -78,7 +95,8 @@ class Player implements PlayerInterface {
 
     this.position.x += this.speed;
     this.context.drawImage(GunImage, this.position.x, this.position.y);
-    // this.context.fillRect(this.position.x, this.position.y, this.size.width, this.size.height);
+
+    this.catchBullet();
     this.bullet.draw();
   }
 }

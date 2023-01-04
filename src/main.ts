@@ -1,6 +1,9 @@
 import { getCanvasAndContext, setCanvasDimentions } from "./canvas";
+import Bullet from "./classes/Bullet";
+import Obstacle from "./classes/Obstacle";
 import Player from "./classes/Player";
 import Wire from "./classes/Wire";
+import { detectObstacleAndBulletDetection } from "./game/collisionDetections";
 import { drawStaticScenes } from "./game/gameScenes";
 
 const gameCanvasSelector: string = "#game-canvas";
@@ -19,6 +22,9 @@ export const init = function () {
   wire = new Wire(wireLength);
 };
 
+/**
+ * Creates the animation loop for the game
+ */
 const animate = function () {
   requestAnimationFrame(animate);
 
@@ -31,6 +37,13 @@ const animate = function () {
   wire.draw();
   wire.addEnemy();
   gun.draw();
+
+  const bullet: Bullet = gun.bullet;
+  const obstacle: Obstacle = wire.obstacle;
+
+  if (detectObstacleAndBulletDetection(bullet, obstacle)) {
+    bullet.movingDirection = "down";
+  }
 };
 
 animate();

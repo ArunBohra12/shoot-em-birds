@@ -1,5 +1,5 @@
 import { Position } from "../types/gameTypes";
-import pole from "../assets/pole.png";
+import pole from "../assets/img/pole.png";
 import { createCanvasImage } from "../canvas";
 
 const GROUND_HEIGHT = 100;

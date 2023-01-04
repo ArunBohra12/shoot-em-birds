@@ -1,7 +1,7 @@
 import { createCanvasImage, getCanvasAndContext } from "../canvas";
 import { Position, Size } from "../types/gameTypes";
-import bullet from "../assets/stone.png";
-import { init } from "../main";
+import bullet from "../assets/img/stone.png";
+import { init as resetGame } from "../main";
 
 const BulletImage = createCanvasImage(bullet);
 
@@ -16,7 +16,7 @@ class Bullet implements BulletInterface {
 
   private isMoving = false;
   private readonly bulletSpeed = 5;
-  private moveDirection: "up" | "down" = "up";
+  public movingDirection: "up" | "down" = "up";
 
   size: Size;
 
@@ -43,7 +43,7 @@ class Bullet implements BulletInterface {
    * @returns The bullet speed is being returned.
    */
   get getSpeed() {
-    return this.moveDirection === "up" ? this.bulletSpeed * -1 : this.bulletSpeed * 1;
+    return this.movingDirection === "up" ? this.bulletSpeed * -1 : this.bulletSpeed * 1;
   }
 
   /**
@@ -51,6 +51,7 @@ class Bullet implements BulletInterface {
    */
   stop(): void {
     this.isMoving = false;
+    this.movingDirection = "up";
   }
 
   /**
@@ -58,6 +59,13 @@ class Bullet implements BulletInterface {
    */
   move(): void {
     this.isMoving = true;
+  }
+
+  /**
+   * Get the isMoving property of the bullet
+   */
+  get isBulletMoving(): boolean {
+    return this.isMoving;
   }
 
   /**
@@ -80,8 +88,9 @@ class Bullet implements BulletInterface {
     this.context.fillStyle = "#777";
     this.context.drawImage(BulletImage, this.position.x, this.position.y);
 
-    if (this.isMoving && this.position.y < 10) {
-      init();
+    // Reset the game if the bullet goes out of the canvas from top or from bottom
+    if ((this.isMoving && this.position.y < 10) || (this.isMoving && this.position.y > this.canvas.width - 200)) {
+      resetGame();
       return;
     }
 
