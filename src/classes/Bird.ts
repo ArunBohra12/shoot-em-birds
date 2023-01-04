@@ -27,6 +27,12 @@ class Bird extends Enemy {
     this.moveDirection = "right";
   }
 
+  /**
+   * If the bird is at the right edge of the screen, move left. If the bird is at the left edge of the
+   * screen, move right
+   * @param {number} left - number - The left most position the bird can move to
+   * @param {number} right - number - the right side of the screen
+   */
   moveLeftAndRight(left: number, right: number): void {
     if (this.birdPosition.x > right - this.size.width) {
       this.moveDirection = "left";
@@ -43,10 +49,20 @@ class Bird extends Enemy {
     }
   }
 
+  /**
+   * Sets the moveDirection property to left or right.
+   * @param {"left" | "right"} direction - The direction the bird should move.
+   */
   set setMoveDirection(direction: "left" | "right") {
     this.moveDirection = direction;
   }
 
+  /**
+   * Draw the bird at the wire
+   *
+   * The reason we subtract the height of the bird is because the bird's position is the top left corner
+   * of the bird, but we want to draw the bird from the bottom left corner
+   */
   draw(): void {
     this.context.drawImage(BirdImage, this.birdPosition.x, this.birdPosition.y - this.size.height);
   }

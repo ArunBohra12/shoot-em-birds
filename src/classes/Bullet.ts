@@ -1,6 +1,7 @@
 import { createCanvasImage, getCanvasAndContext } from "../canvas";
 import { Position, Size } from "../types/gameTypes";
 import bullet from "../assets/stone.png";
+import { init } from "../main";
 
 const BulletImage = createCanvasImage(bullet);
 
@@ -78,6 +79,11 @@ class Bullet implements BulletInterface {
   draw() {
     this.context.fillStyle = "#777";
     this.context.drawImage(BulletImage, this.position.x, this.position.y);
+
+    if (this.isMoving && this.position.y < 10) {
+      init();
+      return;
+    }
 
     if (this.isMoving) {
       this.position.y += this.getSpeed;

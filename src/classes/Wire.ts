@@ -17,6 +17,9 @@ class Wire {
     this.bird.setMoveDirection = "left";
   }
 
+  /**
+   * Draws the birds/ememies (currently birds) into the canvas
+   */
   addEnemy(): void {
     this.bird.draw();
   }
@@ -33,7 +36,7 @@ class Wire {
     this.context.lineTo(this.canvas.width - 150, this.wireHeight);
     this.context.stroke();
 
-    this.bird.moveLeftAndRight(150, this.canvas.width - 150);
+    // this.bird.moveLeftAndRight(150, this.canvas.width - 150);
   }
 }
 

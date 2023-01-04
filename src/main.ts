@@ -4,11 +4,20 @@ import Wire from "./classes/Wire";
 import { drawStaticScenes } from "./game/gameScenes";
 
 const gameCanvasSelector: string = "#game-canvas";
+const wireLength: number = 150;
 
 setCanvasDimentions(gameCanvasSelector);
 
-const gun = new Player(gameCanvasSelector);
-const wire = new Wire(150);
+let gun = new Player(gameCanvasSelector);
+let wire = new Wire(wireLength);
+
+/**
+ * Restarts the game by reassigning the variables
+ */
+export const init = function () {
+  gun = new Player(gameCanvasSelector);
+  wire = new Wire(wireLength);
+};
 
 const animate = function () {
   requestAnimationFrame(animate);
@@ -19,9 +28,9 @@ const animate = function () {
   context.fillRect(0, 0, canvas.width, canvas.height);
   drawStaticScenes(canvas, context);
 
-  gun.draw();
   wire.draw();
   wire.addEnemy();
+  gun.draw();
 };
 
 animate();
