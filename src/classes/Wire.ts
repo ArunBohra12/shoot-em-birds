@@ -1,32 +1,55 @@
 import { getCanvasAndContext } from "../canvas";
 import { Position } from "../types/gameTypes";
 import Bird from "./Bird";
+import Bullet from "./Bullet";
 import Obstacle from "./Obstacle";
 
 class Wire {
   private canvas: HTMLCanvasElement;
   private context: CanvasRenderingContext2D;
 
-  public bird: Bird;
   public obstacle: Obstacle;
+  public birds: Array<Bird>;
 
-  constructor(public wireHeight: number) {
+  constructor(
+    public wireHeight: number,
+    public bullet: Bullet,
+    public birdsData?: Array<any>,
+    public obstacles?: Array<number>,
+  ) {
     const { canvas, context } = getCanvasAndContext("#game-canvas");
 
     this.canvas = canvas;
     this.context = context;
 
-    this.bird = new Bird({ x: 400, y: this.wireHeight });
-    this.bird.setMoveDirection = "left";
+    this.obstacle = new Obstacle(this.bullet);
 
-    this.obstacle = new Obstacle();
+    const allBirds: Array<Bird> = [];
+
+    this.birdsData?.map(birdData => {
+      allBirds.push(new Bird({ x: birdData.position, y: this.wireHeight }, birdData));
+    });
+
+    this.birds = allBirds;
   }
 
   /**
-   * Draws the birds/ememies (currently birds) into the canvas
+   * Draws the birds into the canvas
    */
-  addEnemy(): void {
-    this.bird.draw();
+  addBirds(): void {
+    if (!this.birds?.length) {
+      return;
+    }
+
+    this.birds.forEach(bird => {
+      if (bird.data.willMove) {
+        bird.setMoveDirection = bird.data.movingDirection;
+
+        bird.moveLeftAndRight(bird.data.movingBounds.left, bird.data.movingBounds.right);
+      }
+
+      bird.draw();
+    });
   }
 
   addObstacle(position: Position) {
@@ -46,8 +69,10 @@ class Wire {
     this.context.lineTo(this.canvas.width - 150, this.wireHeight);
     this.context.stroke();
 
-    this.addObstacle({ x: 500, y: this.wireHeight });
-    // this.bird.moveLeftAndRight(150, this.canvas.width - 150);
+    this.obstacles &&
+      this.obstacles.forEach(obstacleXPosition => this.addObstacle({ x: obstacleXPosition, y: this.wireHeight }));
+
+    this.birds && this.addBirds();
   }
 }
 

@@ -2,6 +2,7 @@ import { createCanvasImage, getCanvasAndContext } from "../canvas";
 import Enemy from "./Enemy";
 import bird from "../assets/img/bird.png";
 import { Position, Size } from "../types/gameTypes";
+import { LevelBirds } from "../types/levelTypes";
 
 const BirdImage = createCanvasImage(bird);
 
@@ -15,7 +16,7 @@ class Bird extends Enemy {
 
   private moveDirection: "left" | "right";
 
-  constructor(public birdPosition: Position) {
+  constructor(public position: Position, public data: LevelBirds) {
     super();
 
     const { context } = getCanvasAndContext("#game-canvas");
@@ -32,18 +33,20 @@ class Bird extends Enemy {
    * @param {number} right - number - the right side of the screen
    */
   moveLeftAndRight(left: number, right: number): void {
-    if (this.birdPosition.x > right - this.size.width) {
+    console.log(JSON.stringify(this.position), JSON.stringify({ left, right }));
+
+    if (this.position.x > right - this.size.width) {
       this.moveDirection = "left";
-    } else if (this.birdPosition.x < left + 10) {
+    } else if (this.position.x < left + 10) {
       this.moveDirection = "right";
     }
 
     if (this.moveDirection === "left") {
-      this.birdPosition.x -= this.speed;
+      this.position.x -= this.speed;
     }
 
     if (this.moveDirection === "right") {
-      this.birdPosition.x += this.speed;
+      this.position.x += this.speed;
     }
   }
 
@@ -62,7 +65,7 @@ class Bird extends Enemy {
    * of the bird, but we want to draw the bird from the bottom left corner
    */
   draw(): void {
-    this.context.drawImage(BirdImage, this.birdPosition.x, this.birdPosition.y - this.size.height);
+    this.context.drawImage(BirdImage, this.position.x, this.position.y - this.size.height);
   }
 }
 

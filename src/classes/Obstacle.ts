@@ -1,16 +1,18 @@
 import { Position, Size } from "../types/gameTypes";
+import { detectObstacleAndBulletDetection } from "../game/collisionDetections";
 import { createCanvasImage, getCanvasAndContext } from "../canvas";
 import obstacle from "../assets/img/obstacle.png";
+import Bullet from "./Bullet";
 
 const ObstacleImage = createCanvasImage(obstacle);
 
 class Obstacle {
   private context: CanvasRenderingContext2D;
-  public position: null | Position;
 
+  public position: null | Position;
   public size: Size;
 
-  constructor() {
+  constructor(public bullet: Bullet) {
     const { context } = getCanvasAndContext("#game-canvas");
 
     this.context = context;
@@ -23,6 +25,12 @@ class Obstacle {
     this.position = null;
   }
 
+  detectCollisionWithBullet(): void {
+    if (detectObstacleAndBulletDetection(this.bullet, this)) {
+      this.bullet.movingDirection = "down";
+    }
+  }
+
   /**
    * Draws the obstacle on the given position
    * @param position Position of the obstacle on the wire
@@ -33,6 +41,8 @@ class Obstacle {
       y: position.y - this.size.height / 2,
     };
     this.context.drawImage(ObstacleImage, position.x, position.y - this.size.height / 2);
+
+    this.detectCollisionWithBullet();
   }
 }
 

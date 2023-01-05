@@ -87,6 +87,8 @@ class Player implements PlayerInterface {
     }
   }
 
+  killBird(): void {}
+
   // Draw and update the player
   draw(): void {
     this.context.fillStyle = "#f00";

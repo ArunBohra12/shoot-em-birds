@@ -89,7 +89,7 @@ class Bullet implements BulletInterface {
     this.context.drawImage(BulletImage, this.position.x, this.position.y);
 
     // Reset the game if the bullet goes out of the canvas from top or from bottom
-    if ((this.isMoving && this.position.y < 10) || (this.isMoving && this.position.y > this.canvas.width - 200)) {
+    if ((this.isMoving && this.position.y < 10) || (this.isMoving && this.position.y > this.canvas.height - 10)) {
       resetGame();
       return;
     }

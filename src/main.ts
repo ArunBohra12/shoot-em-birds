@@ -1,25 +1,31 @@
 import { getCanvasAndContext, setCanvasDimentions } from "./canvas";
 import Bullet from "./classes/Bullet";
-import Obstacle from "./classes/Obstacle";
 import Player from "./classes/Player";
 import Wire from "./classes/Wire";
-import { detectObstacleAndBulletDetection } from "./game/collisionDetections";
 import { drawStaticScenes } from "./game/gameScenes";
+import { Level } from "./types/levelTypes";
+import getLevelData from "./assets/data/levels";
 
 const gameCanvasSelector: string = "#game-canvas";
-const wireLength: number = 150;
 
 setCanvasDimentions(gameCanvasSelector);
 
+const level: Level = getLevelData(0);
+
 let gun = new Player(gameCanvasSelector);
-let wire = new Wire(wireLength);
+const wires: Array<Wire> = [];
 
 /**
  * Restarts the game by reassigning the variables
  */
 export const init = function () {
   gun = new Player(gameCanvasSelector);
-  wire = new Wire(wireLength);
+  // wire = new Wire(wireHeight);
+
+  const bullet: Bullet = gun.bullet;
+  level.wires.forEach(wire => {
+    wires.push(new Wire(wire.height, bullet, wire.birds, wire.obstacles));
+  });
 };
 
 /**
@@ -30,22 +36,18 @@ const animate = function () {
 
   const { canvas, context } = getCanvasAndContext(gameCanvasSelector);
 
+  context.clearRect(0, 0, canvas.width, canvas.height);
+
   context.fillStyle = "#57a3c6";
   context.fillRect(0, 0, canvas.width, canvas.height);
   drawStaticScenes(canvas, context);
 
-  wire.draw();
-  wire.addEnemy();
+  wires.forEach(wire => wire.draw());
+
   gun.draw();
-
-  const bullet: Bullet = gun.bullet;
-  const obstacle: Obstacle = wire.obstacle;
-
-  if (detectObstacleAndBulletDetection(bullet, obstacle)) {
-    bullet.movingDirection = "down";
-  }
 };
 
+init();
 animate();
 
 // Event listeners to move player left and right
