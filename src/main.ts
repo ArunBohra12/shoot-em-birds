@@ -13,16 +13,16 @@ setCanvasDimentions(gameCanvasSelector);
 const level: Level = getLevelData(0);
 
 let gun = new Player(gameCanvasSelector);
-const wires: Array<Wire> = [];
+let wires: Array<Wire> = [];
 
 /**
  * Restarts the game by reassigning the variables
  */
 export const init = function () {
   gun = new Player(gameCanvasSelector);
-  // wire = new Wire(wireHeight);
 
   const bullet: Bullet = gun.bullet;
+  wires = [];
   level.wires.forEach(wire => {
     wires.push(new Wire(wire.height, bullet, wire.birds, wire.obstacles));
   });
