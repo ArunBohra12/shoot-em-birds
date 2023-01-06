@@ -1,5 +1,6 @@
 import { getCanvasAndContext } from "../canvas";
 import { Position } from "../types/gameTypes";
+import { LevelBirds } from "../types/levelTypes";
 import Bird from "./Bird";
 import Bullet from "./Bullet";
 import Obstacle from "./Obstacle";
@@ -14,7 +15,7 @@ class Wire {
   constructor(
     public wireHeight: number,
     public bullet: Bullet,
-    public birdsData?: Array<any>,
+    public birdsData?: Array<LevelBirds> | undefined,
     public obstacles?: Array<number>,
   ) {
     const { canvas, context } = getCanvasAndContext("#game-canvas");
@@ -43,8 +44,6 @@ class Wire {
 
     this.birds.forEach(bird => {
       if (bird.data.willMove) {
-        bird.setMoveDirection = bird.data.movingDirection;
-
         bird.moveLeftAndRight(bird.data.movingBounds.left, bird.data.movingBounds.right);
       }
 

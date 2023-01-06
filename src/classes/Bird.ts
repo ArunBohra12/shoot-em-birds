@@ -14,7 +14,7 @@ class Bird extends Enemy {
     width: 42,
   };
 
-  private moveDirection: "left" | "right";
+  private moveDirection: "left" | "right" | null;
 
   constructor(public position: Position, public data: LevelBirds) {
     super();
@@ -23,7 +23,7 @@ class Bird extends Enemy {
 
     this.context = context;
 
-    this.moveDirection = "right";
+    this.moveDirection = this.data.willMove ? this.data.movingDirection : null;
   }
 
   /**
@@ -33,8 +33,6 @@ class Bird extends Enemy {
    * @param {number} right - number - the right side of the screen
    */
   moveLeftAndRight(left: number, right: number): void {
-    console.log(JSON.stringify(this.position), JSON.stringify({ left, right }));
-
     if (this.position.x > right - this.size.width) {
       this.moveDirection = "left";
     } else if (this.position.x < left + 10) {
@@ -48,14 +46,6 @@ class Bird extends Enemy {
     if (this.moveDirection === "right") {
       this.position.x += this.speed;
     }
-  }
-
-  /**
-   * Sets the moveDirection property to left or right.
-   * @param {"left" | "right"} direction - The direction the bird should move.
-   */
-  set setMoveDirection(direction: "left" | "right") {
-    this.moveDirection = direction;
   }
 
   /**
