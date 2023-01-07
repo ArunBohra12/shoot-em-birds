@@ -23,9 +23,19 @@ export const init = function (): void {
 
   const bullet: Bullet = gun.bullet;
   wires = [];
-  level.wires.forEach(wire => {
-    wires.push(new Wire(wire.height, bullet, wire.birds, wire.obstacles));
-  });
+  level.wires.forEach(wire => wires.push(new Wire(wire, bullet)));
+};
+
+export const removeBirdFromWire = function (wireId: string, birdId: string): void {
+  for (let i = 0; i < wires.length; i++) {
+    const wire = wires[i];
+
+    if (wire.wireData.id !== wireId) continue;
+
+    for (let j = 0; j < wire.birds.length; j++) {
+      if (wire.birds[j].data.id === birdId) wire.birds.splice(j, 1);
+    }
+  }
 };
 
 /**

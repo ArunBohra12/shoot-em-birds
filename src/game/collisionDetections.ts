@@ -1,4 +1,5 @@
 import Bullet from "../classes/Bullet";
+import Enemy from "../classes/Enemy";
 import Obstacle from "../classes/Obstacle";
 
 /**
@@ -17,6 +18,20 @@ export const detectObstacleAndBulletCollision = function (bullet: Bullet, obstac
     obstacle.position.x <= bullet.position.x + bullet.size.width &&
     obstacle.position.x + obstacle.size.width >= bullet.position.x
   ) {
+    return true;
+  }
+
+  return false;
+};
+
+export const detectEnemyAndBulletCollision = function (bullet: Bullet, enemy: Enemy) {
+  const isCollidingYAxis = enemy.position.y - 5 < bullet.position.y && enemy.position.y + 5 > bullet.position.y;
+  const isCollidingXAxis =
+    enemy.position.x <= bullet.position.x + bullet.size.width &&
+    enemy.position.x + enemy.size.width >= bullet.position.x;
+
+  // If bullet is moving up and bullet hits the bottom of the enemy return true
+  if (bullet.movingDirection === "up" && isCollidingXAxis && isCollidingYAxis) {
     return true;
   }
 

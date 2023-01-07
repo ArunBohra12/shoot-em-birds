@@ -1,6 +1,6 @@
 import { getCanvasAndContext } from "../canvas";
 import { Position } from "../types/gameTypes";
-import { LevelBirds } from "../types/levelTypes";
+import { LevelBirds, LevelWire } from "../types/levelTypes";
 import Bird from "./Bird";
 import Bullet from "./Bullet";
 import Obstacle from "./Obstacle";
@@ -12,12 +12,7 @@ class Wire {
   public obstacle: Obstacle;
   public birds: Array<Bird>;
 
-  constructor(
-    public wireHeight: number,
-    public bullet: Bullet,
-    public birdsData?: Array<LevelBirds> | undefined,
-    public obstacles?: Array<number>,
-  ) {
+  constructor(public wireData: LevelWire, public bullet: Bullet) {
     const { canvas, context } = getCanvasAndContext("#game-canvas");
 
     this.canvas = canvas;
@@ -27,8 +22,10 @@ class Wire {
 
     const allBirds: Array<Bird> = [];
 
-    this.birdsData?.map(birdData => {
-      allBirds.push(new Bird({ x: birdData.position, y: this.wireHeight }, birdData, this.bullet));
+    this.wireData.birds?.map(bird => {
+      const birdPosition: Position = { x: bird.position, y: this.wireData.height };
+
+      allBirds.push(new Bird(birdPosition, bird, this.bullet, wireData.id));
     });
 
     this.birds = allBirds;
@@ -56,12 +53,14 @@ class Wire {
     this.context.fillStyle = "#000";
     this.context.lineWidth = 5;
     this.context.beginPath();
-    this.context.moveTo(150, this.wireHeight);
-    this.context.lineTo(this.canvas.width - 150, this.wireHeight);
+    this.context.moveTo(150, this.wireData.height);
+    this.context.lineTo(this.canvas.width - 150, this.wireData.height);
     this.context.stroke();
 
-    this.obstacles &&
-      this.obstacles.forEach(obstacleXPosition => this.addObstacle({ x: obstacleXPosition, y: this.wireHeight }));
+    this.wireData.obstacles &&
+      this.wireData.obstacles.forEach(obstacleXPosition =>
+        this.addObstacle({ x: obstacleXPosition, y: this.wireData.height }),
+      );
 
     this.birds && this.addBirds();
   }

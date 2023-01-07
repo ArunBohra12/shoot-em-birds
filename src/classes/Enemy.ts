@@ -1,3 +1,4 @@
+import { detectEnemyAndBulletCollision } from "../game/collisionDetections";
 import { Position, Size } from "../types/gameTypes";
 import { LevelBirds } from "../types/levelTypes";
 import Bullet from "./Bullet";
@@ -21,7 +22,9 @@ class Enemy {
     this.moveDirection = this.enemyPositionData.willMove ? this.enemyPositionData.movingDirection : null;
   }
 
-  detectCollisionWithBullet(): void {}
+  detectCollisionWithBullet(): void {
+    this.collidedWithBullet = detectEnemyAndBulletCollision(this.bullet, this);
+  }
 
   /**
    * If the bird is at the right edge of the screen, move left. If the bird is at the left edge of the

@@ -5,6 +5,7 @@ import bird from "../assets/img/bird.png";
 
 import Enemy from "./Enemy";
 import Bullet from "./Bullet";
+import { removeBirdFromWire } from "../main";
 
 const BirdImage = createCanvasImage(bird);
 
@@ -13,9 +14,7 @@ class Bird extends Enemy {
 
   public size: Size;
 
-  private isAlive: boolean = true;
-
-  constructor(public position: Position, public data: LevelBirds, public bullet: Bullet) {
+  constructor(public position: Position, public data: LevelBirds, public bullet: Bullet, public wireId: string) {
     const size: Size = {
       height: 75,
       width: 42,
@@ -30,10 +29,11 @@ class Bird extends Enemy {
   }
 
   /**
-   * The bird gets killed, change the isAlive status to false
+   * The bird gets killed, remove it from the birds array
    */
   die(): void {
-    this.isAlive = false;
+    // this.data.id
+    removeBirdFromWire(this.wireId, this.data.id);
   }
 
   /**
@@ -43,7 +43,9 @@ class Bird extends Enemy {
    * of the bird, but we want to draw the bird from the bottom left corner
    */
   draw(): void {
-    if (!this.isAlive) return;
+    this.detectCollisionWithBullet();
+
+    if (this.collidedWithBullet) this.die();
 
     if (this.data.willMove) {
       this.moveLeftAndRight(this.data.movingBounds.left, this.data.movingBounds.right);
