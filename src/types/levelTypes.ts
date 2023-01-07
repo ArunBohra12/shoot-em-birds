@@ -1,4 +1,4 @@
-export type LevelBirds =
+export type LevelEnemy =
   | {
       id: string;
       position: number;
@@ -19,7 +19,8 @@ export type LevelWire = {
   id: string;
   height: number;
   obstacles?: Array<number>;
-  birds?: Array<LevelBirds>;
+  birds?: Array<LevelEnemy>;
+  electricShocks?: Array<LevelEnemy>;
 };
 
 export type Level = {

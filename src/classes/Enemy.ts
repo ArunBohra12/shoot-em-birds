@@ -1,9 +1,9 @@
 import { detectEnemyAndBulletCollision } from "../game/collisionDetections";
 import { Position, Size } from "../types/gameTypes";
-import { LevelBirds } from "../types/levelTypes";
+import { LevelEnemy } from "../types/levelTypes";
 import Bullet from "./Bullet";
 
-type EnemyPositionData = LevelBirds;
+type EnemyPositionData = LevelEnemy;
 
 class Enemy {
   protected speed: number = 3;

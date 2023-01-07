@@ -1,8 +1,9 @@
 import { getCanvasAndContext } from "../canvas";
 import { Position } from "../types/gameTypes";
-import { LevelBirds, LevelWire } from "../types/levelTypes";
+import { LevelWire } from "../types/levelTypes";
 import Bird from "./Bird";
 import Bullet from "./Bullet";
+import ElectricShock from "./ElectricShcok";
 import Obstacle from "./Obstacle";
 
 class Wire {
@@ -11,6 +12,7 @@ class Wire {
 
   public obstacle: Obstacle;
   public birds: Array<Bird>;
+  public electricShocks: Array<ElectricShock>;
 
   constructor(public wireData: LevelWire, public bullet: Bullet) {
     const { canvas, context } = getCanvasAndContext("#game-canvas");
@@ -18,30 +20,56 @@ class Wire {
     this.canvas = canvas;
     this.context = context;
 
-    this.obstacle = new Obstacle(this.bullet);
+    this.obstacle = new Obstacle(bullet);
 
     const allBirds: Array<Bird> = [];
+    const allElectricShocks: Array<ElectricShock> = [];
 
+    // loop through the birds array
     this.wireData.birds?.map(bird => {
       const birdPosition: Position = { x: bird.position, y: this.wireData.height };
 
-      allBirds.push(new Bird(birdPosition, bird, this.bullet, wireData.id));
+      allBirds.push(new Bird(birdPosition, bird, bullet, wireData.id));
     });
 
-    this.birds = allBirds;
+    // loop through the electric shocks array
+    this.wireData.electricShocks?.map(shock => {
+      const shockPosition: Position = { x: shock.position, y: this.wireData.height };
+
+      allElectricShocks.push(new ElectricShock(shockPosition, shock, bullet));
+    });
+
+    this.birds = allBirds || [];
+    this.electricShocks = allElectricShocks || [];
   }
 
   /**
    * Draws the birds into the canvas
    */
-  addBirds(): void {
+  private addBirds(): void {
     if (!this.birds?.length) return;
 
     this.birds.forEach(bird => bird.draw());
   }
 
-  addObstacle(position: Position) {
-    this.obstacle.draw({ x: position.x, y: position.y });
+  private addElectricShocks(): void {
+    if (!this.electricShocks.length) return;
+
+    this.electricShocks.forEach(shock => shock.draw());
+  }
+
+  private addObstacles() {
+    if (!this.wireData.obstacles) return;
+
+    /* 
+    this will run on every animation frame and therefore
+    this.obstacles is instanciated in the constructor so that
+    it happens only once
+    */
+
+    this.wireData.obstacles.forEach(obstacleXPosition => {
+      this.obstacle.draw({ x: obstacleXPosition, y: this.wireData.height });
+    });
   }
 
   /**
@@ -57,12 +85,9 @@ class Wire {
     this.context.lineTo(this.canvas.width - 150, this.wireData.height);
     this.context.stroke();
 
-    this.wireData.obstacles &&
-      this.wireData.obstacles.forEach(obstacleXPosition =>
-        this.addObstacle({ x: obstacleXPosition, y: this.wireData.height }),
-      );
-
-    this.birds && this.addBirds();
+    this.wireData.obstacles && this.addObstacles();
+    this.birds.length && this.addBirds();
+    this.electricShocks.length && this.addElectricShocks();
   }
 }
 

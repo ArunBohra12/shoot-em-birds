@@ -18,7 +18,7 @@ class Bullet implements BulletInterface {
   private readonly bulletSpeed = 5;
   public movingDirection: "up" | "down" = "up";
 
-  size: Size;
+  public size: Size;
 
   constructor(public position: Position) {
     const { canvas, context } = getCanvasAndContext("#game-canvas");

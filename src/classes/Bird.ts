@@ -1,6 +1,6 @@
 import { createCanvasImage, getCanvasAndContext } from "../canvas";
 import { Position, Size } from "../types/gameTypes";
-import { LevelBirds } from "../types/levelTypes";
+import { LevelEnemy } from "../types/levelTypes";
 import bird from "../assets/img/bird.png";
 
 import Enemy from "./Enemy";
@@ -14,7 +14,7 @@ class Bird extends Enemy {
 
   public size: Size;
 
-  constructor(public position: Position, public data: LevelBirds, public bullet: Bullet, public wireId: string) {
+  constructor(public position: Position, public data: LevelEnemy, public bullet: Bullet, public wireId: string) {
     const size: Size = {
       height: 75,
       width: 42,
@@ -32,7 +32,6 @@ class Bird extends Enemy {
    * The bird gets killed, remove it from the birds array
    */
   die(): void {
-    // this.data.id
     removeBirdFromWire(this.wireId, this.data.id);
   }
 

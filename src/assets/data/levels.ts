@@ -28,11 +28,35 @@ const getLevelData = function (level: number): Level {
               willMove: false,
             },
           ],
+          electricShocks: [
+            {
+              id: uuid(),
+              position: 600,
+              willMove: false,
+            },
+            {
+              id: uuid(),
+              position: 660,
+              willMove: true,
+              movingDirection: "right",
+              movingBounds: {
+                left: 620,
+                right: 820,
+              },
+            },
+          ],
         },
         {
           id: uuid(),
           height: 150,
           obstacles: [400],
+          electricShocks: [
+            {
+              id: uuid(),
+              position: 600,
+              willMove: false,
+            },
+          ],
         },
       ],
     },
