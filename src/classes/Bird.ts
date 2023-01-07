@@ -1,51 +1,39 @@
 import { createCanvasImage, getCanvasAndContext } from "../canvas";
-import Enemy from "./Enemy";
-import bird from "../assets/img/bird.png";
 import { Position, Size } from "../types/gameTypes";
 import { LevelBirds } from "../types/levelTypes";
+import bird from "../assets/img/bird.png";
+
+import Enemy from "./Enemy";
+import Bullet from "./Bullet";
 
 const BirdImage = createCanvasImage(bird);
 
 class Bird extends Enemy {
   private context: CanvasRenderingContext2D;
 
-  public size: Size = {
-    height: 75,
-    width: 42,
-  };
+  public size: Size;
 
-  private moveDirection: "left" | "right" | null;
+  private isAlive: boolean = true;
 
-  constructor(public position: Position, public data: LevelBirds) {
-    super();
+  constructor(public position: Position, public data: LevelBirds, public bullet: Bullet) {
+    const size: Size = {
+      height: 75,
+      width: 42,
+    };
+
+    super(size, position, bullet, data);
 
     const { context } = getCanvasAndContext("#game-canvas");
 
     this.context = context;
-
-    this.moveDirection = this.data.willMove ? this.data.movingDirection : null;
+    this.size = size;
   }
 
   /**
-   * If the bird is at the right edge of the screen, move left. If the bird is at the left edge of the
-   * screen, move right
-   * @param {number} left - number - The left most position the bird can move to
-   * @param {number} right - number - the right side of the screen
+   * The bird gets killed, change the isAlive status to false
    */
-  moveLeftAndRight(left: number, right: number): void {
-    if (this.position.x > right - this.size.width) {
-      this.moveDirection = "left";
-    } else if (this.position.x < left + 10) {
-      this.moveDirection = "right";
-    }
-
-    if (this.moveDirection === "left") {
-      this.position.x -= this.speed;
-    }
-
-    if (this.moveDirection === "right") {
-      this.position.x += this.speed;
-    }
+  die(): void {
+    this.isAlive = false;
   }
 
   /**
@@ -55,6 +43,12 @@ class Bird extends Enemy {
    * of the bird, but we want to draw the bird from the bottom left corner
    */
   draw(): void {
+    if (!this.isAlive) return;
+
+    if (this.data.willMove) {
+      this.moveLeftAndRight(this.data.movingBounds.left, this.data.movingBounds.right);
+    }
+
     this.context.drawImage(BirdImage, this.position.x, this.position.y - this.size.height);
   }
 }

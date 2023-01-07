@@ -1,5 +1,5 @@
 import { Position, Size } from "../types/gameTypes";
-import { detectObstacleAndBulletDetection } from "../game/collisionDetections";
+import { detectObstacleAndBulletCollision } from "../game/collisionDetections";
 import { createCanvasImage, getCanvasAndContext } from "../canvas";
 import obstacle from "../assets/img/obstacle.png";
 import Bullet from "./Bullet";
@@ -26,7 +26,7 @@ class Obstacle {
   }
 
   detectCollisionWithBullet(): void {
-    if (detectObstacleAndBulletDetection(this.bullet, this)) {
+    if (detectObstacleAndBulletCollision(this.bullet, this)) {
       this.bullet.movingDirection = "down";
     }
   }
@@ -35,7 +35,7 @@ class Obstacle {
    * Draws the obstacle on the given position
    * @param position Position of the obstacle on the wire
    */
-  draw(position: Position) {
+  draw(position: Position): void {
     this.position = {
       x: position.x,
       y: position.y - this.size.height / 2,

@@ -18,7 +18,7 @@ let wires: Array<Wire> = [];
 /**
  * Restarts the game by reassigning the variables
  */
-export const init = function () {
+export const init = function (): void {
   gun = new Player(gameCanvasSelector);
 
   const bullet: Bullet = gun.bullet;
@@ -31,7 +31,7 @@ export const init = function () {
 /**
  * Creates the animation loop for the game
  */
-const animate = function () {
+const animate = function (): void {
   requestAnimationFrame(animate);
 
   const { canvas, context } = getCanvasAndContext(gameCanvasSelector);

@@ -42,7 +42,7 @@ class Bullet implements BulletInterface {
    * otherwise return the bulletSpeed multiplied by 1
    * @returns The bullet speed is being returned.
    */
-  get getSpeed() {
+  get getSpeed(): number {
     return this.movingDirection === "up" ? this.bulletSpeed * -1 : this.bulletSpeed * 1;
   }
 
@@ -84,7 +84,7 @@ class Bullet implements BulletInterface {
    * Draw the bullet
    * If this.isMoving is true then update position of the bullet on the y-axis
    */
-  draw() {
+  draw(): void {
     this.context.fillStyle = "#777";
     this.context.drawImage(BulletImage, this.position.x, this.position.y);
 

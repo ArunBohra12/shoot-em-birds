@@ -28,7 +28,7 @@ class Wire {
     const allBirds: Array<Bird> = [];
 
     this.birdsData?.map(birdData => {
-      allBirds.push(new Bird({ x: birdData.position, y: this.wireHeight }, birdData));
+      allBirds.push(new Bird({ x: birdData.position, y: this.wireHeight }, birdData, this.bullet));
     });
 
     this.birds = allBirds;
@@ -38,17 +38,9 @@ class Wire {
    * Draws the birds into the canvas
    */
   addBirds(): void {
-    if (!this.birds?.length) {
-      return;
-    }
+    if (!this.birds?.length) return;
 
-    this.birds.forEach(bird => {
-      if (bird.data.willMove) {
-        bird.moveLeftAndRight(bird.data.movingBounds.left, bird.data.movingBounds.right);
-      }
-
-      bird.draw();
-    });
+    this.birds.forEach(bird => bird.draw());
   }
 
   addObstacle(position: Position) {

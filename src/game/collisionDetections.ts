@@ -7,7 +7,7 @@ import Obstacle from "../classes/Obstacle";
  * @param {Bullet} bullet - Bullet - The bullet object
  * @param {Obstacle} obstacle - Obstacle - The obstacle that the bullet is colliding with
  */
-export const detectObstacleAndBulletDetection = function (bullet: Bullet, obstacle: Obstacle): boolean {
+export const detectObstacleAndBulletCollision = function (bullet: Bullet, obstacle: Obstacle): boolean {
   if (
     obstacle.position?.y &&
     bullet.position.y <= obstacle.position.y + obstacle.size.height &&
