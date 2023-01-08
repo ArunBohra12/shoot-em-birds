@@ -24,14 +24,34 @@ export const detectObstacleAndBulletCollision = function (bullet: Bullet, obstac
   return false;
 };
 
-export const detectEnemyAndBulletCollision = function (bullet: Bullet, enemy: Enemy) {
-  const isCollidingYAxis = enemy.position.y - 5 < bullet.position.y && enemy.position.y + 5 > bullet.position.y;
+/**
+ * If the bullet is moving and the bullet is colliding with the enemy on the x and y axis, return true
+ * @param {Bullet} bullet - Bullet - The bullet object
+ * @param {Enemy} enemy - Enemy - The enemy object
+ * @returns {boolean} - whether enemy & bullet are colliding
+ */
+export const detectEnemyAndBulletCollision = function (bullet: Bullet, enemy: Enemy): boolean {
+  const enemyYPos = enemy.position.y;
+  const bulletYPos = bullet.position.y;
+
   const isCollidingXAxis =
     enemy.position.x <= bullet.position.x + bullet.size.width &&
     enemy.position.x + enemy.size.width >= bullet.position.x;
 
+  // Y-axis collision when bullet is moving up
+  const isCollidingYAxisUpMovement = enemyYPos - 5 < bulletYPos && enemyYPos + 5 > bulletYPos;
+
+  // Y-axis collision when bullet is moving down
+  const isCollidingYAxisDownMovement =
+    enemyYPos - enemy.size.height + 5 > bulletYPos && enemyYPos - enemy.size.height - 5 < bulletYPos;
+
   // If bullet is moving up and bullet hits the bottom of the enemy return true
-  if (bullet.movingDirection === "up" && isCollidingXAxis && isCollidingYAxis) {
+  if (bullet.movingDirection === "up" && isCollidingXAxis && isCollidingYAxisUpMovement) {
+    return true;
+  }
+
+  // If bullet is moving down and bullet hits the top of the enemy return true
+  if (bullet.movingDirection === "down" && isCollidingXAxis && isCollidingYAxisDownMovement) {
     return true;
   }
 
