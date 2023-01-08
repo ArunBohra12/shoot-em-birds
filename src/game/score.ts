@@ -20,7 +20,9 @@ const getHighestScore = function (): number {
  * @returns the value of the localStorage item with the key HIGHEST_SCORE_LOCAL_STORAGE_KEY.
  */
 export const setHighestScore = function (score: number) {
-  if (score > getHighestScore()) return;
+  const heighestScore = getHighestScore();
+  // Heighest score is the number of shots take to complete the game
+  if (score > heighestScore && heighestScore !== 0) return;
 
   localStorage.setItem(HIGHEST_SCORE_LOCAL_STORAGE_KEY, String(score));
 };
