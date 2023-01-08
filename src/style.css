@@ -37,3 +37,9 @@ body {
   right: 1rem;
   bottom: 1rem;
 }
+
+#hi-score-box {
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+}

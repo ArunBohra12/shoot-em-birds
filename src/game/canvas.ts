@@ -10,7 +10,7 @@ interface CanvasAndContextInterface {
 export const setCanvasDimentions = function (canvasSelector: string): void {
   const canvas: HTMLCanvasElement = document.querySelector(canvasSelector)!;
 
-  canvas.width = window.innerWidth - 10;
+  canvas.width = 1200;
   canvas.height = window.innerHeight - 10;
 };
 

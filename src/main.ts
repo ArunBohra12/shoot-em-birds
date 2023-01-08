@@ -7,6 +7,7 @@ import { drawStaticScenes } from "./game/gameScenes";
 import Bullet from "./classes/Bullet";
 import Player from "./classes/Player";
 import Wire from "./classes/Wire";
+import { updateHighestScore, setHighestScore } from "./game/score";
 
 // -----------------------------------------
 // SETTING GAME STATE START
@@ -26,6 +27,7 @@ let wires: Array<Wire> = [];
 
 createTextBox("SHOTS: ", { id: "total-shots" });
 createTextBox("LEVEL: ", { id: "level" });
+createTextBox("HI SCORE: ", { id: "hi-score-box" });
 
 // SETTING GAME STATE FINISH
 // -----------------------------------------
@@ -36,9 +38,8 @@ createTextBox("LEVEL: ", { id: "level" });
  * @returns {void}
  */
 const updateScore = function (increment: number): void {
-  const scoreEl = document.querySelector("#total-shots .text-value");
+  const scoreEl = document.querySelector("#total-shots .text-value")!;
   score += increment;
-  if (!scoreEl) return;
 
   scoreEl.textContent = `${score}`;
 };
@@ -49,8 +50,7 @@ const updateScore = function (increment: number): void {
  * @returns {void}
  */
 const displayLevel = function (level: number): void {
-  const levelEl = document.querySelector("#level .text-value");
-  if (!levelEl) return;
+  const levelEl = document.querySelector("#level .text-value")!;
 
   levelEl.textContent = `${level}/${totalLevels}`;
 };
@@ -75,21 +75,45 @@ const checkLevelFinished = function (): boolean {
 };
 
 const finishedGame = function (): void {
+  setHighestScore(score);
+  updateHighestScore();
+
   alert(`You have finished the game.\n Your score is ${score}`);
+
+  level = 1;
+  score = 0;
+
+  levelData = getLevelData(level);
+
+  displayLevel(level);
+  updateScore(score);
+
+  init();
 };
 
 const advanceToNextLevel = function (): void {
-  if (level === totalLevels) {
-    finishedGame();
-    return;
-  }
+  const bullet = gun.bullet;
 
-  level++;
+  // Just for visual effect
+  // When bullet kills the last bird it stops
+  setTimeout(() => bullet.stop(), 100);
 
-  levelData = getLevelData(level);
-  displayLevel(level);
+  // When bullet kills the last bird, next level comes in .3s
+  // Tells user they have finished the game
+  setTimeout(() => {
+    bullet.stop();
+    if (level === totalLevels) {
+      finishedGame();
+      return;
+    }
 
-  init();
+    level++;
+
+    levelData = getLevelData(level);
+    displayLevel(level);
+
+    init();
+  }, 300);
 };
 
 /**
@@ -153,6 +177,7 @@ const animate = function (): void {
 // Start the game with score of 0 and level 1
 updateScore(0);
 displayLevel(level);
+updateHighestScore();
 
 init();
 animate();

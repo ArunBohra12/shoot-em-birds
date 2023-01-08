@@ -12,47 +12,11 @@ const levelsData: Array<Level> = [
     wires: [
       {
         id: uuid(),
-        height: 400,
+        height: 300,
         birds: [
           {
             id: uuid(),
-            position: 400,
-            willMove: true,
-            movingDirection: "left",
-            movingBounds: { left: 150, right: 450 },
-          },
-          {
-            id: uuid(),
             position: 500,
-            willMove: false,
-          },
-        ],
-        electricShocks: [
-          {
-            id: uuid(),
-            position: 600,
-            willMove: false,
-          },
-          {
-            id: uuid(),
-            position: 660,
-            willMove: true,
-            movingDirection: "right",
-            movingBounds: {
-              left: 620,
-              right: 820,
-            },
-          },
-        ],
-      },
-      {
-        id: uuid(),
-        height: 150,
-        obstacles: [400],
-        electricShocks: [
-          {
-            id: uuid(),
-            position: 600,
             willMove: false,
           },
         ],
@@ -64,48 +28,164 @@ const levelsData: Array<Level> = [
     wires: [
       {
         id: uuid(),
-        height: 400,
+        height: 200,
         birds: [
-          {
-            id: uuid(),
-            position: 400,
-            willMove: true,
-            movingDirection: "left",
-            movingBounds: { left: 150, right: 450 },
-          },
           {
             id: uuid(),
             position: 500,
             willMove: false,
           },
         ],
+      },
+      {
+        id: uuid(),
+        height: 450,
+        birds: [
+          {
+            id: uuid(),
+            position: 500,
+            willMove: false,
+          },
+        ],
+      },
+    ],
+  },
+  {
+    level: 3,
+    wires: [
+      {
+        id: uuid(),
+        height: 200,
+        birds: [
+          {
+            id: uuid(),
+            position: 500,
+            willMove: false,
+          },
+        ],
+      },
+      {
+        id: uuid(),
+        height: 450,
         electricShocks: [
           {
             id: uuid(),
-            position: 600,
+            position: 495,
             willMove: false,
           },
           {
             id: uuid(),
-            position: 660,
+            position: 555,
+            willMove: false,
+          },
+        ],
+      },
+    ],
+  },
+  {
+    level: 4,
+    wires: [
+      {
+        id: uuid(),
+        height: 400,
+        birds: [
+          {
+            id: uuid(),
+            position: 500,
             willMove: true,
-            movingDirection: "right",
+            movingDirection: "left",
             movingBounds: {
-              left: 620,
-              right: 820,
+              left: 300,
+              right: 700,
             },
           },
         ],
       },
       {
         id: uuid(),
+        height: 250,
+        birds: [
+          {
+            id: uuid(),
+            position: 500,
+            willMove: true,
+            movingDirection: "right",
+            movingBounds: {
+              left: 300,
+              right: 700,
+            },
+          },
+        ],
+      },
+    ],
+  },
+  {
+    level: 5,
+    wires: [
+      {
+        id: uuid(),
         height: 150,
         obstacles: [400],
+      },
+      {
+        id: uuid(),
+        height: 400,
+        birds: [
+          {
+            id: uuid(),
+            position: 400,
+            willMove: true,
+            movingDirection: "right",
+            movingBounds: {
+              left: 200,
+              right: 700,
+            },
+          },
+        ],
+      },
+      {
+        id: uuid(),
+        height: 430,
         electricShocks: [
           {
             id: uuid(),
-            position: 600,
-            willMove: false,
+            position: 380,
+            willMove: true,
+            movingDirection: "right",
+            movingBounds: {
+              left: 180,
+              right: 660,
+            },
+          },
+          {
+            id: uuid(),
+            position: 400,
+            willMove: true,
+            movingDirection: "right",
+            movingBounds: {
+              left: 200,
+              right: 680,
+            },
+          },
+          {
+            id: uuid(),
+            position: 420,
+            willMove: true,
+            movingDirection: "right",
+            movingBounds: {
+              left: 220,
+              right: 700,
+            },
+          },
+          {
+            id: uuid(),
+            position: 440,
+            willMove: true,
+            movingDirection: "right",
+            movingBounds: {
+              left: 240,
+              right: 720,
+            },
           },
         ],
       },

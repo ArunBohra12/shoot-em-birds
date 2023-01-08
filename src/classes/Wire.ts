@@ -3,7 +3,7 @@ import { Position } from "../types/gameTypes";
 import { LevelWire } from "../types/levelTypes";
 import Bird from "./Bird";
 import Bullet from "./Bullet";
-import ElectricShock from "./ElectricShcok";
+import ElectricShock from "./ElectricShock";
 import Obstacle from "./Obstacle";
 
 class Wire {
