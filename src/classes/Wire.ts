@@ -1,4 +1,4 @@
-import { getCanvasAndContext } from "../canvas";
+import { getCanvasAndContext } from "../game/canvas";
 import { Position } from "../types/gameTypes";
 import { LevelWire } from "../types/levelTypes";
 import Bird from "./Bird";

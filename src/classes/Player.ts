@@ -1,4 +1,4 @@
-import { createCanvasImage, getCanvasAndContext } from "../canvas";
+import { createCanvasImage, getCanvasAndContext } from "../game/canvas";
 import { Size, Position } from "../types/gameTypes";
 import Bullet from "./Bullet";
 import gun from "../assets/img/gun.png";

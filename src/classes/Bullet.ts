@@ -1,4 +1,4 @@
-import { createCanvasImage, getCanvasAndContext } from "../canvas";
+import { createCanvasImage, getCanvasAndContext } from "../game/canvas";
 import { Position, Size } from "../types/gameTypes";
 import bullet from "../assets/img/stone.png";
 import { init as resetGame } from "../main";

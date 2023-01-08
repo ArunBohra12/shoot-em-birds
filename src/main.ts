@@ -1,19 +1,96 @@
-import { getCanvasAndContext, setCanvasDimentions } from "./canvas";
+import { getCanvasAndContext, setCanvasDimentions } from "./game/canvas";
+import { Level } from "./types/levelTypes";
+import getLevelData, { totalLevels } from "./assets/data/levels";
+import { createTextBox } from "./game/text";
+import { drawStaticScenes } from "./game/gameScenes";
+
 import Bullet from "./classes/Bullet";
 import Player from "./classes/Player";
 import Wire from "./classes/Wire";
-import { drawStaticScenes } from "./game/gameScenes";
-import { Level } from "./types/levelTypes";
-import getLevelData from "./assets/data/levels";
+
+// -----------------------------------------
+// SETTING GAME STATE START
 
 const gameCanvasSelector: string = "#game-canvas";
 
 setCanvasDimentions(gameCanvasSelector);
 
-const level: Level = getLevelData(0);
+let levelData: Level = getLevelData(1);
+let level = levelData.level;
+
+let birdsKilled = 0;
+let score = 0;
 
 let gun = new Player(gameCanvasSelector);
 let wires: Array<Wire> = [];
+
+createTextBox("SHOTS: ", { id: "total-shots" });
+createTextBox("LEVEL: ", { id: "level" });
+
+// SETTING GAME STATE FINISH
+// -----------------------------------------
+
+/**
+ * It updates the score element on the page with the new score
+ * @param {number} increment - number - The number to increment the score by.
+ * @returns {void}
+ */
+const updateScore = function (increment: number): void {
+  const scoreEl = document.querySelector("#total-shots .text-value");
+  score += increment;
+  if (!scoreEl) return;
+
+  scoreEl.textContent = `${score}`;
+};
+
+/**
+ * Sets the lvel number in the level display box
+ * @param {number} level - number - The current level of the game.
+ * @returns {void}
+ */
+const displayLevel = function (level: number): void {
+  const levelEl = document.querySelector("#level .text-value");
+  if (!levelEl) return;
+
+  levelEl.textContent = `${level}/${totalLevels}`;
+};
+
+/**
+ * Checks if current level is finished or not
+ * @returns {boolean}
+ */
+const checkLevelFinished = function (): boolean {
+  // total birds in the level
+  const totalBirds = levelData.wires.reduce((acc, el) => {
+    const birdsLength = el.birds?.length || 0;
+
+    return acc + birdsLength;
+  }, 0);
+
+  if (totalBirds === birdsKilled) {
+    return true;
+  }
+
+  return false;
+};
+
+const finishedGame = function (): void {
+  alert(`You have finished the game.\n Your score is ${score}`);
+};
+
+const advanceToNextLevel = function (): void {
+  if (level === totalLevels) {
+    finishedGame();
+    return;
+  }
+
+  level++;
+
+  levelData = getLevelData(level);
+  displayLevel(level);
+
+  init();
+};
 
 /**
  * Restarts the game by reassigning the variables
@@ -23,9 +100,16 @@ export const init = function (): void {
 
   const bullet: Bullet = gun.bullet;
   wires = [];
-  level.wires.forEach(wire => wires.push(new Wire(wire, bullet)));
+  levelData.wires.forEach(wire => wires.push(new Wire(wire, bullet)));
+
+  birdsKilled = 0;
 };
 
+/**
+ * Remove the bird from the birds array
+ * @param wireId id of the wire where bird was killed
+ * @param birdId id of the bird that was shot
+ */
 export const removeBirdFromWire = function (wireId: string, birdId: string): void {
   for (let i = 0; i < wires.length; i++) {
     const wire = wires[i];
@@ -36,6 +120,12 @@ export const removeBirdFromWire = function (wireId: string, birdId: string): voi
       if (wire.birds[j].data.id === birdId) wire.birds.splice(j, 1);
     }
   }
+
+  birdsKilled++;
+
+  const isLevelFinished = checkLevelFinished();
+
+  if (isLevelFinished) advanceToNextLevel();
 };
 
 /**
@@ -57,6 +147,13 @@ const animate = function (): void {
   gun.draw();
 };
 
+// ------------------------------------------
+// STARTING THE GAME
+
+// Start the game with score of 0 and level 1
+updateScore(0);
+displayLevel(level);
+
 init();
 animate();
 
@@ -77,4 +174,5 @@ window.addEventListener("keyup", function (e) {
   if (e.code !== "Space") return;
 
   gun.shoot();
+  updateScore(1);
 });

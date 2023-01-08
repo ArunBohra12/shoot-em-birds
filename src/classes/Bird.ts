@@ -1,4 +1,4 @@
-import { createCanvasImage, getCanvasAndContext } from "../canvas";
+import { createCanvasImage, getCanvasAndContext } from "../game/canvas";
 import { Position, Size } from "../types/gameTypes";
 import { LevelEnemy } from "../types/levelTypes";
 import bird from "../assets/img/bird.png";

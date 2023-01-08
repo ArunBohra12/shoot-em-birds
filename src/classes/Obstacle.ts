@@ -1,6 +1,6 @@
 import { Position, Size } from "../types/gameTypes";
 import { detectObstacleAndBulletCollision } from "../game/collisionDetections";
-import { createCanvasImage, getCanvasAndContext } from "../canvas";
+import { createCanvasImage, getCanvasAndContext } from "../game/canvas";
 import obstacle from "../assets/img/obstacle.png";
 import Bullet from "./Bullet";
 
